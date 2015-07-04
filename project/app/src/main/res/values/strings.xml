@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">SimplestCounter</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_decrease">Decrease</string>
     <string name="button_increase">Increase</string>
     <string name="counter_value">Counter</string>
 </resources>

@@ -16,13 +16,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Access the preference for this Activity, retrieve the counter value
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        int counter_val = sharedPref.getInt(getString(R.string.counter_value), 0);
-
-        // Update the visible text
-        TextView txt = (TextView) findViewById(R.id.counter_text);
-        txt.setText(Integer.toString(counter_val));
+        int counter_val = getCounterValue();
+        updateText(counter_val);
     }
 
 
@@ -41,7 +36,15 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_clear) {
+            updateText(0);
+            updateCounterValue(0);
+            return true;
+        } else if (id == R.id.action_decrease) {
+            int counter_val = getCounterValue();
+            counter_val = counter_val - 1;
+            updateText(counter_val);
+            updateCounterValue(counter_val);
             return true;
         }
 
@@ -49,19 +52,28 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void increaseCounter(View view) {
-
-        // Access the preference for this Activity, retrieve the counter value and increase it by 1
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        int counter_val = sharedPref.getInt(getString(R.string.counter_value), 0);
+        int counter_val = getCounterValue();
         counter_val = counter_val + 1;
+        updateText(counter_val);
+        updateCounterValue(counter_val);
+    }
 
+    private int getCounterValue() {
+        // Access the preference for this Activity, retrieve the counter value
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getInt(getString(R.string.counter_value), 0);
+    }
+
+    private void updateText(int counter_value) {
         // Update the visible text
         TextView txt = (TextView) findViewById(R.id.counter_text);
-        txt.setText(Integer.toString(counter_val));
+        txt.setText(Integer.toString(counter_value));
+    }
 
-        // Finally update the preference file
+    private void updateCounterValue(int counter_value) {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.counter_value), counter_val);
+        editor.putInt(getString(R.string.counter_value), counter_value);
         editor.commit();
     }
 }
